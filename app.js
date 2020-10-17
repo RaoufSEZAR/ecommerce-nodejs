@@ -27,7 +27,9 @@ const fileStorage = multer.diskStorage({
         cb(null, "images");
     },
     filename: (req, file, cb) => {
+
         cb(null, new Date().toISOString().replace(/:/g, '-') + '-' + file.originalname);
+        //cb(null, new Date().toISOString() + '-' + file.originalname);
 
 
     },
@@ -91,6 +93,9 @@ app.use((req, res, next) => {
                 return next();
             }
             req.user = user;
+            //for show after the login
+            userEmail = user.email;
+
             next();
         })
         .catch((err) => {
@@ -111,6 +116,7 @@ app.use((error, req, res, next) => {
     // res.redirect('/500');
     res.status(500).render("500", {
         pageTitle: "Error!",
+
         path: "/500",
         isAuthenticated: req.session.isLoggedIn,
 

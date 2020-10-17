@@ -32,6 +32,7 @@ exports.getLogin = (req, res, next) => {
             email: '',
             password: ''
         },
+
         validationErrors: []
     });
 };
@@ -53,6 +54,7 @@ exports.getSignup = (req, res, next) => {
             password: '',
             confirmPassword: ''
         },
+
         validationErrors: []
     });
 };
@@ -66,6 +68,8 @@ exports.postLogin = (req, res, next) => {
         return res.status(422).render('auth/login', {
             path: '/login',
             pageTitle: 'Login',
+
+
             errorMessage: errors.array()[0].msg,
             oldInput: {
                 email: email,
@@ -83,6 +87,8 @@ exports.postLogin = (req, res, next) => {
                 return res.status(422).render('auth/login', {
                     path: '/login',
                     pageTitle: 'Login',
+
+
                     errorMessage: 'Invalid email or password.',
                     oldInput: {
                         email: email,
@@ -97,6 +103,8 @@ exports.postLogin = (req, res, next) => {
                     if (doMatch) {
                         req.session.isLoggedIn = true;
                         req.session.user = user;
+                        req.session.user.email = user.email;
+
                         return req.session.save(err => {
                             console.log(err);
                             res.redirect('/');
@@ -105,6 +113,7 @@ exports.postLogin = (req, res, next) => {
                     return res.status(422).render('auth/login', {
                         path: '/login',
                         pageTitle: 'Login',
+
                         errorMessage: 'Invalid email or password.',
                         oldInput: {
                             email: email,
@@ -136,6 +145,9 @@ exports.postSignup = (req, res, next) => {
             path: '/signup',
             pageTitle: 'Signup',
             errorMessage: errors.array()[0].msg,
+
+
+
             oldInput: {
                 email: email,
                 password: password,
@@ -190,6 +202,7 @@ exports.getReset = (req, res, next) => {
     res.render('auth/reset', {
         path: '/reset',
         pageTitle: 'Reset Password',
+
         errorMessage: message
     });
 };
@@ -251,6 +264,8 @@ exports.getNewPassword = (req, res, next) => {
             res.render('auth/new-password', {
                 path: '/new-password',
                 pageTitle: 'New Password',
+
+
                 errorMessage: message,
                 userId: user._id.toString(),
                 passwordToken: token

@@ -26,6 +26,7 @@ exports.postAddProduct = (req, res, next) => {
             path: '/admin/add-product',
             editing: false,
             hasError: true,
+
             product: {
                 title: title,
                 price: price,
@@ -202,13 +203,11 @@ exports.deleteProduct = (req, res, next) => {
             //for deleting the imag if it is not exist after the deleting the prod 
             fileHelper.deleteFile(product.imageUrl);
             return Product.deleteOne({ _id: prodId, userId: req.user._id })
-
         }).then(() => {
             console.log('DESTROYED PRODUCT');
             res.status(200).json({ message: "Success!" });
         })
         .catch(err => {
             res.status(500).json({ message: "Deleting product failed." });
-
         });
 };
